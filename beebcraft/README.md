@@ -6,7 +6,7 @@ A side-on, Minecraft-like sandbox for the **BBC Micro Model B**, written in pure
 [jsbeeb](https://github.com/mattgodbolt/jsbeeb).
 
 ```
- BEEBCRAFT  C=col T=tile G=sep N=new
+ BEEBCRAFT  C=col T=style G=sep N=new
                              ***
                             *****
                   ***       """        "
@@ -45,7 +45,7 @@ A side-on, Minecraft-like sandbox for the **BBC Micro Model B**, written in pure
 | `/` | place the selected block at the target |
 | `1`–`9`, `0` | pick a hotbar slot: dirt, grass, stone, sand, wood, leaves, coal, iron, gold, diamond |
 | `C` | colour ↔ monochrome |
-| `T` | tile style: ASCII → BLOCK → MIXED |
+| `T` | tile style: ASCII → SHADED → BLOCK → MIXED |
 | `G` | contiguous ↔ separated graphics (block styles) |
 | `N` | generate a new world |
 | `Q` or `ESCAPE` | quit to BASIC (the BASIC program in memory is kept) |
@@ -79,10 +79,50 @@ yourself. Bedrock and water can't be mined. Each slot holds up to 99.
 | bedrock | `&` | jagged | jagged | white |
 | player / cursor | `@` / `+` | `@` / `X` | `@` / `X` | inherits the colour |
 
+**SHADED** (optional; see below) is density-shaded ASCII.
+
 **MIXED** is the "both at once" option. Terrain uses sextant graphics, while
 ores, the player and the cursor use capital letters. Teletext shows codes
 &40–&5F as letters even in graphics mode ("blast-through"), so mixing them costs
 no control codes.
+
+### SHADED style (density-shaded ASCII)
+
+This is the 4th style in the `T` cycle and works in both mono and colour. Plain
+ASCII is unchanged. Each cell's glyph comes from one table lookup:
+`shadeg[band*32 + exposed*16 + tile]`. That depends on:
+
+* **exposure**: whether the cell above is open (air, the player, or the cursor
+  on air), from a 16-byte `exptab`, OR'd onto the tile id;
+* **depth band**: one of 4 bands by world row (rows 0–21, 22–27, 28–33,
+  34–39). A per-row table (`rowband`) picks the 32-byte glyph table, patched
+  into the loop once per row.
+
+Glyphs were picked by how the SAA5050 actually draws them. It replaces
+`#`, `_`, `[`, `]`, `\`, `^`, the backtick, `{`, `|`, `}` and `~` with £, #,
+arrows, ½, —, ¼, ‖, ¾ and ÷, so those codes are used only where the substitute
+itself looks right (‖ for wood, ÷ for deep water).
+
+| Tile | covered (solid/water above) | exposed (open above) |
+|---|---|---|
+| grass | `v` | `w` (tufts) |
+| dirt | `%` → `&` deeper | `o` (bare) |
+| stone | `O` → `8` → `M` → `W` with depth (denser deeper) | `n` → `m` (floors) |
+| sand | `:` | `.` |
+| leaves | `x` (inner) | `*` (outer) |
+| coal/iron/gold/diamond | `c i g d` (small, dark against dense rock) | `C I G D` (glint when exposed) |
+| water | `=` → `÷` deep | `-` (surface ripple) |
+| wood / bedrock | `‖` / solid block (&7F) | same |
+
+Cost: 28 cycles a cell in mono instead of 18. In colour the loop reloads the
+tile for the colour test, so about 50 cycles a cell when the colour doesn't
+change. Two extra kinds of redraw keep the shading correct:
+
+* In SHADED only, the row under the player is redrawn when the player moves.
+* After mining or placing, the row under the target is redrawn.
+
+The cursor uses a separate id on air cells so it never makes the shading
+underneath flicker. The measurements below show it still fits the 25 Hz tick.
 
 ### Colour vs monochrome: the trade-off
 
@@ -210,7 +250,7 @@ offline cache would list the files that were removed.
 | &0070–&008F | zero page (the BASIC user area; BASIC's own zero page is untouched) |
 | &0220 | EVNTV hooked for the vsync event while running (restored on quit) |
 | &1900 | PAGE: the `GAME` loader (only when `CHAIN`ed), which survives the game |
-| &2000–&2D72 | `MCRAFT`: code and tables, about 3.4 KB, loaded and executed at &2000 |
+| &2000–&2FF2 | `MCRAFT`: code and tables, about 4.1 KB, loaded and executed at &2000 |
 | &4000–&67FF | world: 40 rows × 256 columns, one page per row (row-major) |
 | &6800–&6BE7 | 1000-byte off-screen frame buffer |
 | &6C00 | height map (world generation) |
@@ -238,15 +278,33 @@ leaves room for PAGE up to &1F00 if other filing systems or ROMs raise it.
   DEY : BPL`). Colour is about 34 cycles per cell when the colour doesn't change.
   The player and cursor are written into the world map temporarily during the
   render, so the loops never test for them.
-* **Keyboard.** Keys are read directly with OSBYTE &81 and negative INKEY numbers,
-  so several keys can be held at once. The keyboard buffer is flushed every
-  tick, and `*FX229,1` makes ESCAPE an ordinary key.
-* **Measured in jsbeeb** (2 MHz cycles, including interrupts):
-  - full colour redraw: about 44K max, 23.5K average
-  - screen copy: 10.8K
-  - game update: about 0.7K
-  - a scrolling frame fits easily in the 80K-cycle tick
-  - a typical partial redraw costs a few thousand cycles
+* **Keyboard.** Keys are scanned directly on the System VIA: auto-scan is
+  turned off, each internal key number is written to port A, and bit 7 is read
+  back. That takes about 1.5K cycles for all 26 keys, against about 7.5K
+  through OSBYTE &81. Several keys can be held at once. The keyboard buffer is
+  flushed every tick, `*FX229,1` makes ESCAPE an ordinary key, and on quit
+  the game waits for Q/ESCAPE to be released.
+* **Measured in jsbeeb** (`test/run-emulator.mjs` → `screenshots/perf.json`;
+  2 MHz cycles including interrupts; 1 frame = 40,000 cycles, 25 Hz tick =
+  80,000 cycles):
+
+  | Redraw (per render) | full (scrolling), avg / max | partial (1–4 rows), avg |
+  |---|---|---|
+  | mono ASCII | 24,430 / 24,574 | 4,986 |
+  | mono SHADED | 38,100 / 38,425 | 7,246 |
+  | mono BLOCK / MIXED | 24,351 / 24,503 | ~5,060 |
+  | colour ASCII | 42,766 / 43,113 | 6,085 |
+  | colour SHADED | 59,583 / 59,997 | 8,841 |
+  | colour BLOCK / MIXED | ~42,270 / 42,777 | ~6,050 |
+
+  - Other costs per tick: screen copy 10.8K, key scan 1.5K (1.8K max), update
+    0.7K (1.3K max).
+  - Worst case is colour SHADED while scrolling: about 60K + 1.8K + 1.3K +
+    10.8K ≈ 74K of the 80K budget.
+  - While walking and scrolling in every style/colour combination, game ticks
+    were exactly 2 frames apart (0 late ticks in 44 per combination), so the
+    game holds 25 Hz.
+  - SHADED is optional because it costs about 1.4–1.6× ASCII.
 
 ## How it was tested
 
@@ -255,10 +313,11 @@ leaves room for PAGE up to &1F00 if other filing systems or ROMs raise it.
 * `test/run-emulator.mjs` boots `build/beebcraft.ssd` in a headless jsbeeb
   **Model B / DFS 1.2** with a real **SHIFT+BREAK**. It then presses keys
   through the emulated keyboard matrix and saves PNG screenshots and text
-  dumps. The screenshots cover every display mode (colour/mono × ASCII/BLOCK/
-  MIXED, contiguous and separated graphics), walking, jumping, digging down,
-  placing a block and generating a new world. It also writes cycle timings to
-  `screenshots/perf.json`.
+  dumps. The screenshots cover every display mode (colour/mono × ASCII/SHADED/
+  BLOCK/MIXED, contiguous and separated graphics), walking, jumping, digging down,
+  placing a block and generating a new world. It also writes
+  `screenshots/perf.json` with full and partial render cycles for each style
+  and the 25 Hz tick spacing.
 * `test/test-boot.mjs` checks `CHAIN"GAME"`, `*RUN MCRAFT` and `*MCRAFT`, and
   that `Q` returns to a working BASIC prompt with the loader program intact.
 * `test/browser-check.mjs` loads `web/index.html` in headless Chrome, checks
