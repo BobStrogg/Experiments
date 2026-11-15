@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BEEBCRAFT - 6502 Mode 7 Minecraft for the BBC Micro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { background:#000; color:#fff; font-family: "Courier New", monospace; margin:0; padding:16px; }
+  h1 { color:#ff0; background:#00f; display:inline-block; padding:2px 12px; margin:0 0 8px; letter-spacing:2px; }
+  .wrap { display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; }
+  iframe { width: 820px; max-width: 100%; aspect-ratio: 4 / 3.2; border: 2px solid #333; background:#000; }
+  table { border-collapse: collapse; }
+  td { padding: 2px 10px 2px 0; vertical-align: top; }
+  td:first-child { color:#0ff; white-space:nowrap; }
+  a { color:#0f0; }
+  .note { color:#aaa; max-width: 820px; font-size: 13px; }
+</style>
+</head>
+<body>
+<h1>BEEBCRAFT</h1>
+<div class="note">A side-on Minecraft-like sandbox in pure 6502 machine code for the BBC Micro Model B, in MODE 7 teletext.
+Running in <a href="https://github.com/mattgodbolt/jsbeeb">jsbeeb</a> (BBC B, DFS 1.2), auto-booted with SHIFT+BREAK.
+Click the emulator to give it the keyboard.</div>
+<div class="wrap">
+  <iframe id="beeb" src="jsbeeb/index.html?model=B-DFS1.2&amp;disc=beebcraft.ssd&amp;autoboot&amp;embed" allow="autoplay; fullscreen" onload="this.contentWindow.focus()"></iframe>
+  <table>
+    <tr><td>Z / X</td><td>walk left / right (auto step-up)</td></tr>
+    <tr><td>SPACE or :</td><td>jump / swim up</td></tr>
+    <tr><td>Cursor keys</td><td>aim the target cursor (up to 2 tiles away)</td></tr>
+    <tr><td>RETURN</td><td>mine the target block</td></tr>
+    <tr><td>/</td><td>place the selected block</td></tr>
+    <tr><td>1-9, 0</td><td>select hotbar slot</td></tr>
+    <tr><td>C</td><td>colour / monochrome</td></tr>
+    <tr><td>T</td><td>tiles: ASCII / BLOCK / MIXED</td></tr>
+    <tr><td>G</td><td>contiguous / separated graphics</td></tr>
+    <tr><td>N</td><td>new world</td></tr>
+    <tr><td>Q / ESCAPE</td><td>quit to BASIC</td></tr>
+    <tr><td colspan="2"><a href="jsbeeb/index.html?model=B-DFS1.2&amp;disc=beebcraft.ssd&amp;autoboot">Open in the full jsbeeb UI</a> &middot;
+      <a href="jsbeeb/discs/beebcraft.ssd" download>Download beebcraft.ssd</a></td></tr>
+  </table>
+</div>
+<p class="note">On a PC keyboard jsbeeb maps keys by position; the BBC's <b>:</b> is next to L and <b>/</b> is next to the right-hand Shift. Cursor keys are the arrow keys.</p>
+</body>
+</html>
