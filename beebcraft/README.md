@@ -23,14 +23,31 @@ A side-on, Minecraft-like sandbox for the **BBC Micro Model B**, written in pure
 | Path | What |
 |---|---|
 | `build/beebcraft.ssd` | Bootable DFS disc image (boot option 3, `!BOOT` = `*RUN MCRAFT`) |
-| `build/BEEB.MMB` | 511-slot MMFS image with BEEBCRAFT in slot 0, mounted in drive 0 at power-on |
-| `build/BEEB.MMB.zip` | The same MMB plus the SSD, zipped (100 KB instead of 100 MB) |
+| `build/BEEB.MMB` | 511-slot MMFS image: BEEBCRAFT in slot 0 (mounted in drive 0 at power-on), the 3D engines in slots 1–3 |
+| `build/BEEB.MMB.zip` | The same MMB plus all four SSDs, zipped (165 KB instead of 100 MB) |
+| `3d/` | **BEEBCRAFT 3D**: three first-person engines (fast raycaster, height levels, true voxel), see [3d/README.md](3d/README.md) |
 | `src/beebcraft.6502` | The whole game: BeebAsm source |
 | `src/loader.bas`, `src/boot.txt` | `GAME` BASIC loader and the `!BOOT` file |
 | `web/` | Self-contained static site: `index.html` and a trimmed jsbeeb build that auto-boots the disc |
 | `test/` | Headless jsbeeb tests (gameplay script, screenshots, timings, entry paths, browser check) |
 | `screenshots/` | PNGs and text dumps of screen memory from the emulator |
 | `vendor/` | jsbeeb, MMB_Utils and BeebAsm sources (build tools only, not part of the game) |
+
+## BEEBCRAFT 3D
+
+There are three first-person versions in [`3d/`](3d/README.md). They run on the
+same Model B in MODE 7, from `3d/build/craft3d-*.ssd` or from MMB slots 1–3
+(`*DIN 1`, `*DIN 2`, `*DIN 3`, then SHIFT+BREAK):
+
+| Slot | Disc | Engine | fps (HI / LO detail) |
+|---|---|---|---|
+| 0 | BEEBCRAFT | the original 2D game (this README) | – |
+| 1 | C3D-FAST | stage 1: fast raycaster | 14–17 / 25 |
+| 2 | C3D-LEVELS | stage 2: raycaster with height levels, jumping, digging and building at heights | 7–9 / 12–14 |
+| 3 | C3D-VOXEL | stage 3: true 16×16×8 voxel engine with overhangs, 3D dig and build (experimental) | 3.6–4 / 6–7 |
+
+In the browser they are at `web/3d-fast/`, `web/3d-levels/` and `web/3d-voxel/`,
+linked from `web/index.html`.
 
 ## Playing
 
