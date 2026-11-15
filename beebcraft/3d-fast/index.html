@@ -2,47 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>BEEBCRAFT 3D - Stage 1 - fast raycaster</title>
+<title>BEEBCRAFT has moved</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="../favicon.ico">
-<style>
-  body { background:#000; color:#fff; font-family: "Courier New", monospace; margin:0; padding:16px; }
-  h1 { color:#ff0; background:#00f; display:inline-block; padding:2px 12px; margin:0 0 8px; letter-spacing:2px; }
-  .wrap { display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; }
-  iframe { width: 820px; max-width: 100%; aspect-ratio: 4 / 3.2; border: 2px solid #333; background:#000; }
-  table { border-collapse: collapse; }
-  td { padding: 2px 10px 2px 0; vertical-align: top; }
-  td:first-child { color:#0ff; white-space:nowrap; }
-  a { color:#0f0; }
-  .note { color:#aaa; max-width: 820px; font-size: 13px; }
-</style>
+<meta http-equiv="refresh" content="0; url=https://bobstrogg.github.io/beebcraft/3d-fast/">
+<link rel="canonical" href="https://bobstrogg.github.io/beebcraft/3d-fast/">
+<script>location.replace("https://bobstrogg.github.io/beebcraft/3d-fast/" + location.search + location.hash);</script>
+<style>body { background:#000; color:#fff; font-family: "Courier New", monospace; padding:16px; } a { color:#0f0; }</style>
 </head>
 <body>
-<h1>BEEBCRAFT 3D</h1>
-<div class="note"><b>Stage 1 - fast raycaster.</b> Wolfenstein-style grid raycaster: 76 rays into a 76x60 sextant view, fixed-point DDA, table-driven heights and textures, distance shading, mining and placing.
-Pure 6502 on a 32K BBC Micro Model B in MODE 7, running in <a href="https://github.com/mattgodbolt/jsbeeb">jsbeeb</a> (BBC B, DFS 1.2),
-auto-booted with SHIFT+BREAK. Click the emulator to give it the keyboard.</div>
-<p class="note"><a href="../">2D BEEBCRAFT</a> &middot; <a href="../3d-fast/">fast raycaster</a> &middot; <a href="../3d-levels/">raycaster with height levels</a> &middot; <a href="../3d-voxel/">true voxel engine (experimental)</a></p>
-<div class="wrap">
-  <iframe id="beeb" src="../jsbeeb/index.html?model=B-DFS1.2&amp;disc=craft3d-fast.ssd&amp;autoboot&amp;embed" allow="autoplay; fullscreen" onload="this.contentWindow.focus()"></iframe>
-  <table>
-    <tr><td>Cursor up / down</td><td>walk forward / back</td></tr>
-    <tr><td>Cursor left / right</td><td>turn</td></tr>
-    <tr><td>Z / X</td><td>strafe left / right</td></tr>
-    <tr><td>W A S D</td><td>alternative walk / turn keys</td></tr>
-    <tr><td>RETURN</td><td>mine the block under the crosshair</td></tr>
-    <tr><td>/ or SPACE</td><td>place the selected block</td></tr>
-    <tr><td>1-9, 0</td><td>select hotbar slot</td></tr>
-    <tr><td>C</td><td>colour / monochrome</td></tr>
-    <tr><td>T</td><td>blocks (sextants) / ASCII density</td></tr>
-    <tr><td>H</td><td>detail: HI 76 rays / LO 38 rays</td></tr>
-    <tr><td>G</td><td>contiguous / separated graphics</td></tr>
-    <tr><td>N</td><td>new world</td></tr>
-    <tr><td>Q / ESCAPE</td><td>quit to BASIC</td></tr>
-    <tr><td colspan="2"><a href="../jsbeeb/index.html?model=B-DFS1.2&amp;disc=craft3d-fast.ssd&amp;autoboot">Open in the full jsbeeb UI</a> &middot;
-      <a href="../jsbeeb/discs/craft3d-fast.ssd" download>Download craft3d-fast.ssd</a></td></tr>
-  </table>
-</div>
-<p class="note">On a PC keyboard jsbeeb maps keys by position; the BBC's <b>/</b> is next to the right-hand Shift. Cursor keys are the arrow keys.</p>
+<p>BEEBCRAFT has moved to its own home: <a href="https://bobstrogg.github.io/beebcraft/3d-fast/">https://bobstrogg.github.io/beebcraft/3d-fast/</a></p>
+<p>Source, discs and the MMFS image: <a href="https://github.com/BobStrogg/beebcraft">github.com/BobStrogg/beebcraft</a></p>
 </body>
 </html>

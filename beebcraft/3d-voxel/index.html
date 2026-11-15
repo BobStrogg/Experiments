@@ -2,48 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>BEEBCRAFT 3D - Stage 3 - true voxel engine (experimental)</title>
+<title>BEEBCRAFT has moved</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="../favicon.ico">
-<style>
-  body { background:#000; color:#fff; font-family: "Courier New", monospace; margin:0; padding:16px; }
-  h1 { color:#ff0; background:#00f; display:inline-block; padding:2px 12px; margin:0 0 8px; letter-spacing:2px; }
-  .wrap { display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; }
-  iframe { width: 820px; max-width: 100%; aspect-ratio: 4 / 3.2; border: 2px solid #333; background:#000; }
-  table { border-collapse: collapse; }
-  td { padding: 2px 10px 2px 0; vertical-align: top; }
-  td:first-child { color:#0ff; white-space:nowrap; }
-  a { color:#0f0; }
-  .note { color:#aaa; max-width: 820px; font-size: 13px; }
-</style>
+<meta http-equiv="refresh" content="0; url=https://bobstrogg.github.io/beebcraft/3d-voxel/">
+<link rel="canonical" href="https://bobstrogg.github.io/beebcraft/3d-voxel/">
+<script>location.replace("https://bobstrogg.github.io/beebcraft/3d-voxel/" + location.search + location.hash);</script>
+<style>body { background:#000; color:#fff; font-family: "Courier New", monospace; padding:16px; } a { color:#0f0; }</style>
 </head>
 <body>
-<h1>BEEBCRAFT 3D</h1>
-<div class="note"><b>Stage 3 - true voxel engine (experimental).</b> A 16x16x8 block world rendered in real 3D (every run of voxels in every column, with per-pixel occlusion): overhanging roofs, arches, tree canopies and tunnels; dig and build any block in 3D. Runs at about 3-7 frames per second.
-Pure 6502 on a 32K BBC Micro Model B in MODE 7, running in <a href="https://github.com/mattgodbolt/jsbeeb">jsbeeb</a> (BBC B, DFS 1.2),
-auto-booted with SHIFT+BREAK. Click the emulator to give it the keyboard.</div>
-<p class="note"><a href="../">2D BEEBCRAFT</a> &middot; <a href="../3d-fast/">fast raycaster</a> &middot; <a href="../3d-levels/">raycaster with height levels</a> &middot; <a href="../3d-voxel/">true voxel engine (experimental)</a></p>
-<div class="wrap">
-  <iframe id="beeb" src="../jsbeeb/index.html?model=B-DFS1.2&amp;disc=craft3d-voxel.ssd&amp;autoboot&amp;embed" allow="autoplay; fullscreen" onload="this.contentWindow.focus()"></iframe>
-  <table>
-    <tr><td>Cursor up / down or W / S</td><td>walk forward / back</td></tr>
-    <tr><td>Cursor left / right</td><td>turn</td></tr>
-    <tr><td>Z / X or A / D</td><td>strafe</td></tr>
-    <tr><td>R / F</td><td>look up / down</td></tr>
-    <tr><td>SPACE</td><td>jump (walking into a 1-block step climbs it)</td></tr>
-    <tr><td>RETURN</td><td>dig the block face under the crosshair</td></tr>
-    <tr><td>/</td><td>build onto that face (side, top or underside)</td></tr>
-    <tr><td>1-9, 0</td><td>select block</td></tr>
-    <tr><td>C</td><td>colour / monochrome</td></tr>
-    <tr><td>T</td><td>blocks / ASCII density</td></tr>
-    <tr><td>H</td><td>hi / lo detail (lo is about twice as fast)</td></tr>
-    <tr><td>G</td><td>separated graphics</td></tr>
-    <tr><td>N</td><td>new world</td></tr>
-    <tr><td>Q / ESCAPE</td><td>quit to BASIC</td></tr>
-    <tr><td colspan="2"><a href="../jsbeeb/index.html?model=B-DFS1.2&amp;disc=craft3d-voxel.ssd&amp;autoboot">Open in the full jsbeeb UI</a> &middot;
-      <a href="../jsbeeb/discs/craft3d-voxel.ssd" download>Download craft3d-voxel.ssd</a></td></tr>
-  </table>
-</div>
-<p class="note">On a PC keyboard jsbeeb maps keys by position; the BBC's <b>/</b> is next to the right-hand Shift. Cursor keys are the arrow keys.</p>
+<p>BEEBCRAFT has moved to its own home: <a href="https://bobstrogg.github.io/beebcraft/3d-voxel/">https://bobstrogg.github.io/beebcraft/3d-voxel/</a></p>
+<p>Source, discs and the MMFS image: <a href="https://github.com/BobStrogg/beebcraft">github.com/BobStrogg/beebcraft</a></p>
 </body>
 </html>
